@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700;" rel="stylesheet">
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <link href="fullcalendar.min.css" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="homepage.css">
+    <title>Memory Note</title>
+</head>
+
+<body id="indexbody">
+    <div id="web-app-title">Memory Note</div>
+    <div id="wrapper">
+        <div id="left-panel">
+            <div id="calendar-header"><i class="ion-calendar"></i>Calendar</div>
+            <div id="calendar"></div>
+            <div id="tag-header">
+                <i class="ion-pricetag"></i>
+                <button class="btn-add-tag ion-plus-round" title="Create tag"></button>
+                <button class="btn-delete-tag ion-trash-b" title="Delete all selected tags"></button> Tags
+            </div>
+            <ul id="tags"></ul>
+        </div>
+        <div id="journal-entries-header"><i class="ion-document-text"></i>Journal entries</div>
+        <div id="edit-entry-header" style="display:none;"><i class="ion-edit"></i>Edit entry</div>
+        <div id="right-panel">
+            <!--    DISPLAY JOURNAL ENTRIES     -->
+            <div id="journal-entries">
+
+            </div>
+            <!--    EDIT JOURNAL ENTRIES    -->
+            <div class="container" style="display:none;">
+                <div id="edit-entry">
+                    <form id="edit-entry-form" method="post">
+                        <input type="text" name="entryTitle" id="entry-title" placeholder="Enter title" spellcheck="true" value>
+                        <textarea name="entryContent" id="entry-content" placeholder="Enter text" cols="100" rows="11" spellcheck="true"></textarea>
+                    </form>
+                </div>
+                <!--                    <button class="btn-attach-tag" style="color:black;">Add Tag</button>-->
+            </div>
+
+        </div>
+    </div>
+    <input type="search" name="search" id="search-entry" placeholder="Search">
+    <button class="btn-add-entry"><i class="ion-plus-round"></i>Add entry</button>
+    <div class="save-and-del-btn">
+        <button class="btn-save-entry" title="Save entry"><i class="ion-checkmark-round"></i>Save</button>
+        <button class="btn-delete-entry" title="Delete entry"><i class="ion-trash-b"></i>Delete</button>
+    </div>
+
+    <div style="position:absolute; right:0px; bottom:5px;">
+        <button class="btn-sign-out"><i class="ion-power"></i>Sign out</button>
+        <button class="btn-settings"><i class="ion-settings"></i>Settings</button>
+    </div>
+
+    <!-- Disable background -->
+    <div class="modal" id="settModal"></div>
+
+    <!-- POPUP HTML for delete entry -->
+    <div class="window-popup" id="confirm-delete">
+        <p>Delete this entry?</p>
+        <button class="btn-ok-delete">OK</button>
+        <button class="btn-cancel-delete">Cancel</button>
+    </div>
+
+    <!-- POPUP HTML for adding tag entry -->
+    <div class="window-popup" id="add-tag-entry">
+        <h3><i class="ion-pricetag"></i>New Tag</h3>
+        <div class="tag-form">
+            <label for="tagTitle">Tag title:</label>
+            <br>
+            <input type="text" placeholder="Type tag title..." id="tag-title" name="tagTitle">
+            <br>
+            <button class="btn-save-tag">Save</button>
+            <button class="btn-cancel-tag">Cancel</button>
+        </div>
+    </div>
+
+    <!-- POPUP HTML for settings -->
+    <div class="window-popup" id="settPopup">Settings:
+        <div class="change-theme-color">Change Theme Color:
+            <select id="color-options">
+                    <option value = "Blue" class="color"> Blue </option>
+                    <option value = "Red" class="color"> Red </option>
+            </select>
+        </div>
+        <div id="link-google-calendar">Link Google Calendar:
+            <button id="btn-link">Link</button>
+            <button id="btn-unlink" style="display:none;">Unlink</button>
+        </div>
+        <button class="btn-apply"><i class = "ion-checkmark-round"></i>Apply</button>
+        <button class="btn-cancel"><i class = "ion-close"></i>Cancel</button>
+    </div>
+
+
+    <!-- SCRIPTS -->
+    <script src="jquery-3.2.0.js"></script>
+    <script src="moment.min.js"></script>
+    <script src="fullcalendar.min.js"></script>
+    <script src="homepage.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,421 @@
+body {
+    background-color: dodgerblue;
+    font-family: Raleway;
+}
+
+button {
+    position: absolute;
+    color: snow;
+    background: none;
+    border: none;
+    font-family: "Comfortaa", sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: -3px;
+    font-weight: 300;
+}
+
+h3 {
+    margin-left: 10px;
+}
+
+i {
+    color: snow;
+    margin-right: 10px;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+/*
+#entry1:hover {
+    cursor: pointer;
+}
+*/
+
+.btn-add-entry, #right-panel {
+    right: 0;
+}
+
+.btn-add-entry {
+    top: 25px;
+    width: 200px;
+    display: block;
+    text-transform: capitalize;
+}
+
+.btn-sign-out, .btn-settings {
+    width: 150px;
+    bottom: 8px;
+    text-transform: capitalize;
+}
+
+.btn-sign-out {
+    right: 25px;
+}
+
+.btn-settings {
+    right: 205px;
+}
+
+.btn-add-tag, .btn-delete-tag {
+    font-size: 25px;
+    margin-top: -3px;
+}
+
+.btn-add-tag {
+    right: 8px;
+}
+
+.btn-delete-tag {
+    right: 60px;
+}
+
+.save-and-del-btn {
+    position: absolute;
+    top: 23px;
+    left: 32%;
+    display: none;
+}
+
+.btn-save-entry, .btn-delete-entry {
+    font-size: 20px;
+    width: 130px;
+    text-transform: capitalize;
+    position: absolute;
+}
+
+.btn-delete-entry {
+    margin-left: 165px;
+}
+
+.btn-ok-delete, .btn-cancel-delete {
+    position: absolute;
+	width: 150px;
+    bottom: 8px;
+    text-transform: capitalize;
+    color: black;
+}
+
+.btn-cancel-delete {
+    right: 30px;
+}
+
+.btn-ok-delete {
+    left: 30px;
+}
+
+.tag-form {
+    margin-left: 10px;
+}
+
+/* The style for setting's pop up and its content*/
+.modal {
+  display:none;
+  position: fixed;
+  left: 0;
+  top:0;
+  padding-top: 100px;
+  z-index : 1;
+  width:100%;
+  height:100%;
+  overflow: auto; /*enabling scroll if needed */
+  background-color: rgba(0,0,0,0.4);
+}
+
+.window-popup {
+    visibility: hidden;
+    width: 30%;
+	height:30%;
+    background-color: dodgerblue;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+	top: 50%;
+  	left: 50%;
+ 	transform: translate(-50%, -50%);
+	font-family: "Comfortaa", sans-serif;
+    font-size: 20px;
+}
+
+.change-theme-color {
+/*	margin-top:10px;*/
+    line-height: 30px;
+    margin-left: 10px;
+	text-align:left;
+}
+
+/*Apply and cancel for popup*/
+.btn-apply {
+	width: 150px;
+    bottom: 8px;
+	right:150px;
+    text-transform: capitalize;
+}
+
+.btn-cancel{
+	width: 150px;
+    bottom: 8px;
+	right:5px;
+    text-transform: capitalize;
+}
+
+.btn-save-tag, .btn-cancel-tag {
+    width: 150px;
+    bottom: 10px;
+    text-transform: capitalize;
+}
+
+.btn-cancel-tag {
+	right: 150px;
+}
+
+.btn-save-tag {
+    right: 5px;
+}
+
+/*
+.hover-end {
+    padding:0;
+    margin:0;
+    font-size:75%;
+    text-align:center;
+    position:absolute;
+    bottom:0;
+    width:150px;
+    opacity:1;
+    height: 150px;
+    background-color: black;
+    z-index: 5;
+    
+}
+*/
+
+.journal-entry-wrapper {
+    border: 2px solid black;
+    font-family: Raleway;
+    height: 85px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0px 10px;
+    background-color: LightGrey;    
+}
+
+.journal-entry-date {
+    margin: 0;
+    padding: 0;
+    color: rgb(0,100,255);
+}
+
+.journal-entry-title {
+    font-weight: 700;
+    font-size: 23px;
+    margin: 10px 0;
+}
+
+.journal-entry-content {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* */
+ .show {
+	 visibility: visible;
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}
+
+
+#web-app-title {
+    font-family: "Exo", sans-serif;
+	font-size: 40px;
+	font-style: normal;
+	font-variant: small-caps;
+	font-weight: 500;
+	line-height: 26.4px;
+    padding: 10px;
+    color: snow;
+}
+
+#calendar-header, #journal-entries-header, #tag-header, #edit-entry-header {
+/*    border: 1px solid white;*/
+    padding: 10px;
+    margin: 0;
+    text-align: left;
+    background-color: darkblue;
+    color: snow;
+    font-family: Lato;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#calendar-header, #tag-header {
+/*    width: 399px;*/
+    width: 100%;
+}
+
+#journal-entries-header, #edit-entry-header {
+    position: absolute;
+    width: 65.5%;
+    top: 0;
+    right: 0;
+}
+
+#right-panel, #left-panel {
+    position: absolute;
+    overflow-y: scroll;
+}
+
+#left-panel {
+    top: 0;
+    bottom: 0;
+    width: 33%;
+/*    border-right: 2px solid black;*/
+}
+
+#right-panel {
+    top: 45px;
+    bottom: 0;
+    width: 67%;
+/*    border-left: 2px solid black;*/
+}
+
+#search-entry {
+    left: 35%;
+    border: 2px solid #dadada;
+    border-radius: 7px;
+    box-sizing: border-box;
+    background-image:url('http://i47.tinypic.com/r02vbq.png');
+    background-repeat: no-repeat;
+    background-position: -20px -20px;
+    font-size: 16px;
+    width: 95px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    position: absolute;
+    margin-top: -5px;
+    top: 25px;
+    right: 760px;
+    padding: 5px 1px 5px 25px;
+}
+
+#search-entry:focus {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+    width: 210px;
+}
+
+#entry-title, #entry-content {
+    position: relative;
+    width: 95%;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 0;
+    box-sizing: border-box;
+    background: url(textarea_background.png)
+}
+
+#entry-title:focus, #entry-content:focus {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
+
+#entry-content {
+    height: 365px;
+    resize: none;
+    margin-top: 10px;
+    background-repeat: repeat;
+/*    font: normal 18px/24px verdana;*/
+    font: normal 15px/24px verdana;
+    overflow: auto;
+}
+
+#entry-title {
+    margin-top: 20px;
+    background-repeat: repeat-x;
+    font: normal 20px verdana;
+}
+
+#edit-entry {
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    box-shadow: 1px 1px 10px black;
+    background-color: #e6e6e6;
+}
+
+#confirm-delete {
+    width: 25%;
+    height: 20%;
+    background-color: white;
+    color: black;
+}
+
+#add-tag-entry {
+    text-align: left;
+}
+
+#journal-entries p:hover {
+    cursor: pointer;
+}
+
+#wrapper {
+    background-color: snow;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    overflow: hidden;
+}
+
+#tag-title {
+    box-sizing: border-box;
+    width: 98%;
+}
+
+/* Dropdown list for change color*/
+#color-options {
+
+}
+
+#link-google-calendar {
+    text-align: left;
+    margin-left: 10px;
+    padding-right: 15%;
+    line-height: 30px;
+}
+
+#btn-link, #btn-unlink {
+    position: relative; 
+    text-transform: lowercase;
+    font-size: 15px;
+    font-family: "Raleway";
+    float: right;
+    line-height: 35px;
+}
