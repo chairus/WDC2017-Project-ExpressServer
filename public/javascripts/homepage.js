@@ -123,19 +123,7 @@ function handleSignoutClick(event) {
 }
 
 /**
-* Append a pre element to the body containing the given message
-* as its text node. Used to display the results of the API call.
-*
-* @param {string} message Text to be placed in pre element.
-*/
-function appendPre(message) {
-    console.log(message);
-}
-
-/**
-* Print the summary and start datetime/date of the next ten events in
-* the authorized user's calendar. If no events are found an
-* appropriate message is printed.
+* Send request to Google servers to fetch events from Google calendar
 */
 function listUpcomingEvents() {
     gapi.client.calendar.events.list({
@@ -158,7 +146,7 @@ function addEventToCalendar(response) {
     var when;
 
     if (eventsGC.length > 0) {
-        for (i = 0; i < eventsGC.length; i++) {
+        for (var i = 0; i < eventsGC.length; i++) {
             events.push({});
             events[i].title = eventsGC[i].summary;    // Add title of the event
             events[i].location = eventsGC[i].location;    // Add location of event
@@ -471,3 +459,4 @@ buttonCancel.addEventListener("click",function(){
   	document.getElementById("settPopup").classList.toggle("show");
   	document.getElementById("settModal").style.display = "none";
 })
+
