@@ -14,11 +14,11 @@ router.get("/create.html", function(req, res) {
     res.render("create");
 });
 
-router.get("/welcome.html", function(req, res) {
-    res.redirect("/");
+router.post("/welcome.html", function(req, res) {
+    res.redirect("/homepage.html");
 });
 
-router.get("/:page", function(req, res) {
+router.get("*", function(req, res) {
     var page = req.params.page;
     res.render("error", {page:page});
 });
