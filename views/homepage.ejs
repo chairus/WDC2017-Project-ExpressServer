@@ -29,25 +29,22 @@
         <div id="journal-entries-header"><i class="ion-document-text"></i>Journal entries</div>
         <div id="edit-entry-header" style="display:none;"><i class="ion-edit"></i>Edit entry</div>
         <div id="right-panel">
-            <!--    DISPLAY JOURNAL ENTRIES     -->
-            <div id="journal-entries">
-
-            </div>
-            <!--    EDIT JOURNAL ENTRIES    -->
-            <div class="container" style="display:none;">
-                <div id="edit-entry">
-                    <form id="edit-entry-form" method="post">
-                        <input type="text" name="entryTitle" id="entry-title" placeholder="Enter title" spellcheck="true" value>
-                        <textarea name="entryContent" id="entry-content" placeholder="Enter text" cols="100" rows="11" spellcheck="true"></textarea>
-                    </form>
+            <div class="journal-entry-container">
+                <div id="journal-entries">
+                    <% journalEntries.forEach(function(journalEntry) { %>
+                        <div class="journal-entry-wrapper" onclick="editEntry('<%= journalEntry._id %>')">
+                            <p class="journal-entry-date"><%= journalEntry.timestamp %></p>
+                            <p class="journal-entry-title"><%= journalEntry.title %></p>
+                            <p class="journal-entry-content"><%= journalEntry.content %></p>
+                        </div>
+                    <% }) %>
                 </div>
-                <!--                    <button class="btn-attach-tag" style="color:black;">Add Tag</button>-->
             </div>
-
         </div>
     </div>
     <input type="search" name="search" id="search-entry" placeholder="Search">
     <button class="btn-add-entry"><i class="ion-plus-round"></i>Add entry</button>
+    
     <div class="save-and-del-btn">
         <button class="btn-save-entry" title="Save entry"><i class="ion-checkmark-round"></i>Save</button>
         <button class="btn-delete-entry" title="Delete entry"><i class="ion-trash-b"></i>Delete</button>

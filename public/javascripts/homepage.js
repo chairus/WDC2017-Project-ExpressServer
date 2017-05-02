@@ -17,19 +17,19 @@ $(document).ready(function() {
         },
         
         eventClick: function(event, jsEvent, view) {
-            changeToEntryPage();
-            // Set title of the entry to the title of the event
-            document.getElementById("entry-title").value = event.title;
             // Simulate click input for add entry so that the event listener for the save entry button will be added
             buttonAddEntry.click();
+            
+            // Set title of the entry to the title of the event
+            journalEntryTitle = event.title;
         },
         
         eventLimit: 2
     });
 });
 
-var entryCount = 0;     // Keeps track of the next entry number
-var activeIdEntryWrapper = null;    // Contains the ID of the saved journal entry curently being viewed/edited
+var journalEntryTitle = null;
+var activeIdEntry = null;    // Contains the ID of the saved journal entry curently being viewed/edited
 var buttonDeleteEntry = document.querySelector(".btn-delete-entry");
 var buttonAddEntry = document.querySelector(".btn-add-entry");
 var buttonSaveEntry = document.querySelector(".btn-save-entry");
@@ -181,12 +181,8 @@ function changeToHomepage() {
     document.querySelector(".btn-add-entry").style.display = "block";
     
     // Hide the headers and buttons of edit entry page
-    document.getElementById("entry-title").value = "";
-    document.getElementById("entry-content").value = "";
     document.getElementById("edit-entry-header").style.display = "none";
     document.querySelector(".save-and-del-btn").style.display = "none";
-    document.getElementById("edit-entry").style.display = "none";
-    document.querySelector(".container").style.display = "none";
 }
 
 function changeToEntryPage() {
@@ -197,20 +193,42 @@ function changeToEntryPage() {
     document.querySelector(".btn-add-entry").style.display = "none";
     
     // Display the headers and buttons of edit entry page
-    document.querySelector(".container").style.display = "block";
     document.getElementById("edit-entry-header").style.display = "block";
-    document.getElementById("edit-entry").style.display = "block";
     document.querySelector(".save-and-del-btn").style.display = "block";
 }
 
 // Event handler for "Add entry" button
 buttonAddEntry.addEventListener("click", function() {
-    changeToEntryPage();
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var div = document.createElement('DIV');
+            div.setAttribute("class", "entry-container");
+            div.innerHTML = xhr.response;
+            
+            if (document.getElementById("journal-entries")) {
+                changeToEntryPage();
+                var rightPanelNode = document.getElementById("right-panel");
+                var journalEntryNode = document.querySelector(".journal-entry-container");
+                rightPanelNode.removeChild(journalEntryNode);
+                rightPanelNode.appendChild(div);
+            }
+            
+            if (journalEntryTitle) {
+                document.getElementById("entry-title").value = journalEntryTitle;
+                document.getElementById("entry-content").value = "";
+                journalEntryTitle = null;
+            }
+            
+            buttonSaveEntry.removeEventListener("click", replaceEntry);
+            buttonSaveEntry.addEventListener("click", postEntry);
+        }
+    }
     
-    activeIdEntryWrapper = null;
+    xhr.open("GET", "/homepage.html/new&nolayout", true);
+    xhr.send(null);
     
-    buttonSaveEntry.removeEventListener("click", replaceEntry);
-    buttonSaveEntry.addEventListener("click", postEntry);
+    window.history.pushState('', 'new entry form', '/homepage.html/new');
 });
 
 // Event handler for "Delete entry" button
@@ -222,7 +240,7 @@ buttonDeleteEntry.addEventListener("click", function() {
         document.getElementById("confirm-delete").classList.toggle("show");
         document.querySelector(".modal").style.display = "block";
     } else {
-        changeToHomepage();
+        removeEntry();
     }
 });
 
@@ -237,6 +255,29 @@ buttonCancelDelete.addEventListener("click", function() {
     document.getElementById("confirm-delete").classList.toggle("show");
     document.querySelector(".modal").style.display = "none";
 });
+
+function removeEntry() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var div = document.createElement('DIV');
+            div.setAttribute("class", "journal-entry-container");
+            div.innerHTML = xhr.response;
+            
+            var editEntryNode = document.querySelector(".entry-container");
+            var rightPanelNode = document.getElementById("right-panel");
+            rightPanelNode.removeChild(editEntryNode);
+            rightPanelNode.appendChild(div);
+            
+            changeToHomepage();
+            activeIdEntry = null;
+            window.history.pushState('', 'homepage url', '/homepage.html');
+        }
+    }
+    
+    xhr.open("DELETE", "/homepage.html/" + activeIdEntry, true);
+    xhr.send(null);
+}
 
 // Event handler for adding a tag
 buttonAddTag.addEventListener("click", function() {
@@ -307,122 +348,96 @@ function createTag() {
     document.getElementById("tag-title").value = "";
 }
 
-function removeEntry() {
-    if (activeIdEntryWrapper !== null) {
-        var parent = document.getElementById("journal-entries");
-        var child = document.getElementById(activeIdEntryWrapper);
-        parent.removeChild(child);
-        activeIdEntryWrapper == null;
-    }
-    changeToHomepage();
-}
-
 function postEntry() {
     var title = document.getElementById("entry-title").value;
     var content = document.getElementById("entry-content").value;
-    var date = new Date();
+    var date = (new Date()).toDateString();
+    var params = "entryTitle=" + title + "&entryContent=" + content + "&entryDate=" + date;
     
-    // Append/Add the new journal entry onto the journal entries
-    if (title !== "" || content !== "") {
-        var par = document.createElement("p");
-        par.setAttribute("id","entry-wrapper-" + entryCount);
-        par.setAttribute("class", entryCount + " journal-entry-wrapper");
-        
-        par.addEventListener("click",function() {
-            editEntry(this.id);
-        });
-        var dateEl = document.createElement("p");
-        dateEl.setAttribute("id","date-entry-" + entryCount);
-        dateEl.setAttribute("class", entryCount + " journal-entry-date");
-        var fullDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + "-" + " " + date.getHours() + ":";
-        var min = date.getMinutes();
-        if (min > 9) {
-            fullDate = fullDate + min;
-        } else {
-            fullDate = fullDate + "0" + min;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/homepage.html", true);
+    
+    // Send the proper header information along with the request
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var div = document.createElement('DIV');
+            div.setAttribute("class", "journal-entry-container");
+            div.innerHTML = xhr.response;
+            
+            var editEntryNode = document.querySelector(".entry-container");
+            var rightPanelNode = document.getElementById("right-panel");
+            rightPanelNode.removeChild(editEntryNode);
+            rightPanelNode.appendChild(div);
+            
+            changeToHomepage();
+            window.history.pushState('', 'homepage url', '/homepage.html');
         }
-        var dateNode = document.createTextNode(fullDate);
-        dateEl.appendChild(dateNode);
-        var titleEl = document.createElement("p");
-        titleEl.setAttribute("id","title-entry-" + entryCount);
-        titleEl.setAttribute("class", entryCount + " journal-entry-title");
-        if (title === "") {
-            title = "[No title]";
-        }
-        var titleNode = document.createTextNode(title);
-        titleEl.appendChild(titleNode);
-        var contentEl = document.createElement("p");
-        contentEl.setAttribute("id","content-entry-" + entryCount);
-        contentEl.setAttribute("class", entryCount + " journal-entry-content");
-        if (content === "") {
-            content = "[No Content]";
-        }
-        var contentNode = document.createTextNode(content);
-        contentEl.appendChild(contentNode);
-        par.appendChild(dateEl);
-        par.appendChild(titleEl);
-        par.appendChild(contentEl);
-        var element = document.getElementById("journal-entries");
-        element.appendChild(par);
-        entryCount++;
     }
     
-    changeToHomepage();
+    xhr.send(params);
 }
 
 
 function editEntry(id) {
-    activeIdEntryWrapper = id;
+    activeIdEntry = id;
+    buttonAddEntry.click();
     
-    changeToEntryPage();
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var entry = JSON.parse(xhr.response);
+            
+            document.getElementById("entry-title").value = entry[0].title;
+            document.getElementById("entry-content").value = entry[0].content;
+            
+            // Change Event Listener of the save button
+            document.querySelector(".btn-save-entry").removeEventListener("click", postEntry);
+            document.querySelector(".btn-save-entry").addEventListener("click", replaceEntry);
+            
+            window.history.pushState('', 'edit/show page', '/homepage.html/' + id);
+        }
+    }
     
-    // Change Event Listener of the save button
-    document.querySelector(".btn-save-entry").removeEventListener("click", postEntry);
-    document.querySelector(".btn-save-entry").addEventListener("click", replaceEntry);
+    xhr.open("GET", "/homepage.html/" + id, true);
     
-    // Obtain the child elements of the paragraph(p) HTML element
-    var childElements = document.getElementById(id).getElementsByTagName("p");
-    
-    document.getElementById("entry-title").value = childElements[1].innerHTML;
-    document.getElementById("entry-content").value = childElements[2].innerHTML;
+    setTimeout(function() {
+        xhr.send(null);
+    }, 400);
 }
 
 
 function replaceEntry() {
     var title = document.getElementById("entry-title").value;
     var content = document.getElementById("entry-content").value;
+    var params = "entryTitle=" + title + "&entryContent=" + content;
     
-    // Obtain the entry count number so that we can determine which entry to remove
-    var idEntryCount = document.getElementById(activeIdEntryWrapper).getAttribute("class")[0];
+    var xhr = new XMLHttpRequest();
     
-    var parent = document.getElementById(activeIdEntryWrapper);
-    var childTitle = document.getElementById("title-entry-"+idEntryCount);
-    var childContent = document.getElementById("content-entry-"+idEntryCount);
+    xhr.open("PUT", "/homepage.html/" + activeIdEntry, true);
     
-    var titleEl = document.createElement("p");
-    titleEl.setAttribute("id","title-entry-" + idEntryCount);
-    titleEl.setAttribute("class", idEntryCount + " journal-entry-title");
+    // Send the proper header information along with the request
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
-    if (title === "") {
-        title = "[No title]";
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var div = document.createElement('DIV');
+            div.setAttribute("class", "journal-entry-container");
+            div.innerHTML = xhr.response;
+            
+            var editEntryNode = document.querySelector(".entry-container");
+            var rightPanelNode = document.getElementById("right-panel");
+            rightPanelNode.removeChild(editEntryNode);
+            rightPanelNode.appendChild(div);
+            
+            changeToHomepage();
+            activeIdEntry = null;   // No saved entry being viewed/modified
+            window.history.pushState('', 'homepage url', '/homepage.html');
+        }
     }
-    var titleNode = document.createTextNode(title);
-    titleEl.appendChild(titleNode);
     
-    var contentEl = document.createElement("p");
-    contentEl.setAttribute("id","content-entry-" + idEntryCount);
-    contentEl.setAttribute("class", idEntryCount + " journal-entry-content");
-    
-    if (content === "") {
-        content = "[No Content]";
-    }
-    var contentNode = document.createTextNode(content);
-    contentEl.appendChild(contentNode);
-    
-    parent.replaceChild(titleEl, childTitle);
-    parent.replaceChild(contentEl, childContent);
-    
-    changeToHomepage();
+    xhr.send(params);
 }
 
 //Event handler for "Setting" button
