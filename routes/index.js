@@ -16,7 +16,7 @@ router.get("/homepage.html/new&nolayout", function(req, res) {
     res.sendFile(path.join(__dirname, '../views', 'entry_form.ejs'));
 });
 
-router.get("/homepage.html", function(req, res) {
+router.get("/homepage.html/userID", function(req, res) {
     res.render("homepage", {journalEntries: journalEntries});
 });
 
@@ -39,7 +39,7 @@ router.post("/homepage.html", function(req, res) {
     var title = req.body.entryTitle;
     var content = req.body.entryContent;
     var date = req.body.entryDate;
-    
+
     if (title !== '' || content !== '') {
         // Create a new journal entry
         var newEntry = {
@@ -48,11 +48,11 @@ router.post("/homepage.html", function(req, res) {
             content: content,
             timestamp: date
         }
-        
+
         // Push the new journal entry into the array
         journalEntries.unshift(newEntry);
     }
-    
+
     ejs.renderFile(__dirname + '/../views/journal_entry.ejs', {journalEntries: journalEntries}, function(err,str) {
         if (err) {
             res.send(err);
@@ -65,11 +65,11 @@ router.post("/homepage.html", function(req, res) {
 // SHOW - Display the title and content of a journal entry
 router.get("/homepage.html/:id", function(req, res) {
     var id = req.params.id;
-    
+
     var journalEntry = journalEntries.filter((journalEntry) => {
         return (journalEntry._id == id);
     });
-    
+
     res.send(journalEntry);
 });
 
@@ -81,12 +81,12 @@ router.put("/homepage.html/:id", function(req, res) {
     var index = journalEntries.findIndex((journalEntry) => {
         return journalEntry._id == id;
     });
-    
+
     if (index >= 0) {
         journalEntries[index].title = title;
         journalEntries[index].content = content;
     }
-    
+
     ejs.renderFile(__dirname + '/../views/journal_entry.ejs', {journalEntries: journalEntries}, function(err,str) {
         if (err) {
             res.send(err);
@@ -102,11 +102,11 @@ router.delete("/homepage.html/:id", function(req, res) {
     var index = journalEntries.findIndex((journalEntry) => {
         return journalEntry._id == id;
     });
-    
+
     if (index >= 0) {
         journalEntries.splice(index, 1);
     }
-    
+
     ejs.renderFile(__dirname + '/../views/journal_entry.ejs', {journalEntries: journalEntries}, function(err,str) {
         if (err) {
             res.send(err);
