@@ -44,9 +44,10 @@ var buttonSaveTag = document.querySelector(".btn-save-tag");
 var buttonCancelTag = document.querySelector(".btn-cancel-tag");
 var buttonLink = document.getElementById("btn-link");
 var buttonSignOut = document.querySelector(".btn-sign-out");
-var searchBar = document.getElementById("search-entry");
 var maxResults = 100;    // Holds the number of calendar events to be fetched
 var events = [];    // An object with an array property that holds the events in the Google Calendar
+var searchBar = document.getElementById("search-entry");
+
 
 
 
@@ -55,83 +56,84 @@ var events = [];    // An object with an array property that holds the events in
    =============================== */
 
 // Client ID and API key from the Developer Console
-var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
+//var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
+var CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
+// // Array of API discovery doc URLs for APIs used by the quickstart
+ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+//
+// // Authorization scopes required by the API; multiple scopes can be
+// // included, separated by spaces.
+ var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+//
+// var authorizeButton = buttonLink;
+// var signoutButton = buttonSignOut;
+//
+// /**
+// *  On load, called to load the "auth2" library and API client library.
+// */
+ function handleClientLoad() {
+     gapi.load('client:auth2', initClient);
+ }
+//
+// /**
+// *  Initializes the API client library and sets up sign-in state
+// *  listeners.
+// */
+ function initClient() {
+     gapi.client.init({
+       discoveryDocs: DISCOVERY_DOCS,
+       clientId: CLIENT_ID,
+       scope: SCOPES
+     }).then(function () {
+       listUpcomingEvents();
+       // Listen for sign-in state changes.
+       //gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-// Array of API discovery doc URLs for APIs used by the quickstart
-var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+       // Handle the initial sign-in state.
+      //  updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+       //authorizeButton.onclick = handleAuthClick;
+       //signoutButton.onclick = handleSignoutClick;
+     });
+ }
 
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
-var authorizeButton = buttonLink;
-var signoutButton = buttonSignOut;
-
-/**
-*  On load, called to load the "auth2" library and API client library.
-*/
-function handleClientLoad() {
-    gapi.load('client:auth2', initClient);
-}
-
-/**
-*  Initializes the API client library and sets up sign-in state
-*  listeners.
-*/
-function initClient() {
-    gapi.client.init({
-      discoveryDocs: DISCOVERY_DOCS,
-      clientId: CLIENT_ID,
-      scope: SCOPES
-    }).then(function () {
-      // Listen for sign-in state changes.
-      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-      // Handle the initial sign-in state.
-      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      authorizeButton.onclick = handleAuthClick;
-      signoutButton.onclick = handleSignoutClick;
-    });
-}
-
-/**
-*  Called when the signed in status changes, to update the UI
-*  appropriately. After a sign-in, the API is called.
-*/
-function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-        authorizeButton.disabled = true;
-        authorizeButton.innerHTML = "linked";
-        listUpcomingEvents();
-    } else {
-        authorizeButton.disabled = false;
-        authorizeButton.innerHTML = "link";
-    }
-}
-
-/**
-*  Sign in the user upon button click.
-*/
-function handleAuthClick(event) {
-    gapi.auth2.getAuthInstance().signIn();
-}
-
-/**
-*  Sign out the user upon button click.
-*/
-function handleSignoutClick(event) {
-    gapi.auth2.getAuthInstance().signOut();
-}
-
-/**
-<<<<<<< HEAD
-* Send request to Google servers to fetch events from Google calendar
-=======
-* Print the summary and start datetime/date of the next ten events in
-* the authorized user's calendar. If no events are found an
-* appropriate message is printed.
->>>>>>> b7ac840be7e6c61a361c5309ea501a2d580141e8
-*/
+// /**
+// *  Called when the signed in status changes, to update the UI
+// *  appropriately. After a sign-in, the API is called.
+// */
+// function updateSigninStatus(isSignedIn) {
+//     if (isSignedIn) {
+//         authorizeButton.disabled = true;
+//         authorizeButton.innerHTML = "linked";
+//         listUpcomingEvents();
+//     } else {
+//         authorizeButton.disabled = false;
+//         authorizeButton.innerHTML = "link";
+//     }
+// }
+//
+// /**
+// *  Sign in the user upon button click.
+// */
+// function handleAuthClick(event) {
+//     gapi.auth2.getAuthInstance().signIn();
+// }
+//
+// /**
+// *  Sign out the user upon button click.
+// */
+// function handleSignoutClick(event) {
+//     gapi.auth2.getAuthInstance().signOut();
+// }
+//
+// /**
+// <<<<<<< HEAD
+// * Send request to Google servers to fetch events from Google calendar
+// =======
+// * Print the summary and start datetime/date of the next ten events in
+// * the authorized user's calendar. If no events are found an
+// * appropriate message is printed.
+// >>>>>>> b7ac840be7e6c61a361c5309ea501a2d580141e8
+// */
 function listUpcomingEvents() {
     gapi.client.calendar.events.list({
       'calendarId': 'primary',
@@ -144,8 +146,8 @@ function listUpcomingEvents() {
         addEventToCalendar(response);
     });
 }
-
-
+//
+//
 /* Retrieve events from Google Calendar and display it on the calendar. */
 
 function addEventToCalendar(response) {
@@ -169,9 +171,9 @@ function addEventToCalendar(response) {
 
     $("#calendar").fullCalendar("addEventSource", events);  // Display Google Calendar events on the calendar
 }
-
-
-/* ======================================================================= */
+//
+//
+// /* ======================================================================= */
 
 
 function changeToHomepage() {
@@ -329,7 +331,7 @@ buttonDeleteTag.addEventListener("click", function() {
 
 // Event handler for signing out
 buttonSignOut.addEventListener("click", function() {
-    location.href = "welcome.html";
+      document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000";
 });
 
 
@@ -405,7 +407,7 @@ function editEntry(id) {
 
     setTimeout(function() {
         xhr.send(null);
-    }, 300);
+    }, 400);
 }
 
 
@@ -482,27 +484,43 @@ buttonCancel.addEventListener("click",function(){
   	document.getElementById("settModal").style.display = "none";
 })
 
+//Checking LoginStatus
+function getCookie(cname) {
+var name = cname + "=";
+var decodedCookie = decodeURIComponent(document.cookie);
+var ca = decodedCookie.split(';');
+for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+    }
+}
+return "";
+}
 
 // Event handler for search bar
 searchBar.addEventListener("change", function() {
-    var searchTerm = "searchTerm=" + searchBar.value.toLowerCase();
+	var searchTerm = "searchTerm=" + searchBar.value.toLowerCase();
 
-    // Send XMLHttpRequest
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/homepage.html/search", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var div = document.createElement('DIV');
-            div.setAttribute("class", "journal-entry-container");
-            div.innerHTML = xhr.response;
+	// Send XMLHttpRequest
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "/homepage.html/search", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.onreadystatechange = function() {
+    	if (xhr.readyState == 4 && xhr.status == 200) {
+        	var div = document.createElement('DIV');
+        	div.setAttribute("class", "journal-entry-container");
+        	div.innerHTML = xhr.response;
 
-            var editEntryNode = document.querySelector(".journal-entry-container");
-            var rightPanelNode = document.getElementById("right-panel");
-            rightPanelNode.removeChild(editEntryNode);
-            rightPanelNode.appendChild(div);
-        }
-    }
+        	var editEntryNode = document.querySelector(".journal-entry-container");
+        	var rightPanelNode = document.getElementById("right-panel");
+        	rightPanelNode.removeChild(editEntryNode);
+        	rightPanelNode.appendChild(div);
+    	}
+	}
 
-    xhr.send(searchTerm);
+	xhr.send(searchTerm);
 })

@@ -4,24 +4,6 @@ var path = require('path');
 var uniqid = require('uniqid');
 var ejs = require('ejs');
 
-/*
-{
-    id,
-    email,
-    password
-}
-*/
-var users = [];
-
-/*
-{
-    id,
-    title,
-    content,
-    timestamp,
-    author_id
-}
-*/
 var journalEntries = [];
 
 /* GET welcome page. */
@@ -45,11 +27,6 @@ router.get("/homepage.html/new", function(req, res) {
 // REGISTER - Signup
 router.get("/create.html", function(req, res) {
     res.render("create");
-});
-
-// SIGNIN - login
-router.post("/welcome.html", function(req, res) {
-    res.redirect("/homepage.html");
 });
 
 router.post("/homepage.html", function(req, res) {
@@ -136,26 +113,25 @@ router.delete("/homepage.html/:id", function(req, res) {
 
 // SEARCH - Search journal entries of a user using a search term
 router.post("/homepage.html/search", function(req, res) {
-    var searchTerm = req.body.searchTerm;
+	var searchTerm = req.body.searchTerm;
 
-    var foundJournalEntries = journalEntries.filter((journalEntry) => {
-        var indexTitle = journalEntry.title.toLowerCase().search(searchTerm);
-        var indexContent = journalEntry.content.toLowerCase().search(searchTerm);
+	var foundJournalEntries = journalEntries.filter((journalEntry) => {
+    	var indexTitle = journalEntry.title.toLowerCase().search(searchTerm);
+    	var indexContent = journalEntry.content.toLowerCase().search(searchTerm);
 
-        if (indexTitle >= 0 || indexContent >= 0) {
-            return true;
-        }
-        return false;
-    });
+    	if (indexTitle >= 0 || indexContent >= 0) {
+        	return true;
+    	}
+    	return false;
+	});
 
-    ejs.renderFile(__dirname + '/../views/journal_entry.ejs', {journalEntries: foundJournalEntries}, function(err,str) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(str);
-        }
-    })
-
+	ejs.renderFile(__dirname + '/../views/journal_entry.ejs', {journalEntries: foundJournalEntries}, function(err,str) {
+    	if (err) {
+        	res.send(err);
+    	} else {
+        	res.send(str);
+    	}
+	})
 });
 
 router.get("*", function(req, res) {

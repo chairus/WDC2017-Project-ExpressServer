@@ -49,7 +49,7 @@ label{
 	width: 100%;
 }
 
-/* */ 
+/* */
 input {
 	display: block;
 	text-align: left;
@@ -116,7 +116,7 @@ div {
 	border: 2px solid black;
 	border-radius: 10px;
 	width: 550px;
-	height: 400px;
+	height: 280px;
 	padding: 25px;
 	font-size: 17px;
 	font-weight: 600;
@@ -130,7 +130,7 @@ label{
 	width: 100%;
 }
 
-/* */ 
+/* */
 input {
 	display: block;
 	text-align: left;

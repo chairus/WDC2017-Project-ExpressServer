@@ -1,18 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <script>
+    function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+    //Checking the user Login status to make sure
+    //that the user has logged in before accessing the homepage
+    var currentloginStatus= getCookie("loginStatus");
+    function checkLogin(){
+      if (currentloginStatus == "Invalid" || currentloginStatus == "") {
+        alert(currentloginStatus);
+        location.href = "/";
+      }
+      else {
+        
+      }}
+      checkLogin();
+      </script>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700;" rel="stylesheet">
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/fullcalendar.min.css">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/homepage.css">
+    <link href="fullcalendar.min.css" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="homepage.css">
     <title>Memory Note</title>
 </head>
-
 <body id="indexbody">
     <div id="web-app-title">Memory Note</div>
     <div id="wrapper">
@@ -96,11 +123,11 @@
 
 
     <!-- SCRIPTS -->
-    <script src="/javascripts/lib/jquery-3.2.0.js"></script>
-    <script src="/javascripts/lib/moment.min.js"></script>
-    <script src="/javascripts/lib/fullcalendar.min.js"></script>
-    <script src="/javascripts/homepage.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"></script>
+    <script src="jquery-3.2.0.js"></script>
+    <script src="moment.min.js"></script>
+    <script src="fullcalendar.min.js"></script>
+    <script src="homepage.js"></script>
+    <script src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"></script>
 <!--     onreadystatechange="if (this.readyState === 'complete') this.onload()"-->
 </body>
 
