@@ -1,4 +1,6 @@
 var express = require('express');
+var session = require('express-session');
+var flash = require('connect-flash');
 var path = require('path');
 var favicon = require('static-favicon');
 //var favicon = require(’serve-favicon');
@@ -15,8 +17,16 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// app configuration
 //app.use(favicon());
 app.use(logger('dev'));
+// Creates a req.session object on each route
+app.use(session({
+    secret: 'I am the Dark Knight. I am Batman',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());

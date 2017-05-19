@@ -8,31 +8,29 @@
 	<link rel="stylesheet" type="text/css" href="welcome.css">
 	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
-	
-
 </head>
 
 <body>
 
 	<section>
 	<h1>Memory Note</h1>
-
+	<% if (warning && warning.length > 0) { %>
+		<div id="warning-msg">
+			<%= warning %>
+		</div>
+	<% } %>
 	<div class="login">
-
-		<form action="homepage.html">
-
-			<label for="femail" >Enter email address:</label>
-			<input type="email" id="femail" name="femail" placeholder="Enter email address" required>
-			<label for="fpwd" >Enter password:</label>
-			<input type="password" id="fpwd" name="fpwd" placeholder="Enter password" required>
-			<label for="fpwd2" >Re-enter password:</label>
-			<input type="password" id="fpwd2" name="fpwd2" placeholder="Re-enter password" required>
-			<br>
+		<form action="/users/signup" method="POST">
+			<label for="femail">Enter email address:</label>
+			<input type="email" id="femail" name="user[femail]" placeholder="Enter email address" required>
+			<label for="fpwd">Enter password:</label>
+			<input type="password" id="fpwd" name="user[fpwd]" placeholder="Enter password" required>
+			<label for="fpwd2">Re-enter password:</label>
+			<input type="password" id="fpwd2" name="user[fpwd2]" placeholder="Re-enter password" required>
 			<button>Confirm account</button>
 		</form>
 
-		
-
+		<button type="button" onclick="location.replace('/')">Cancel</button>
 	</div>
 </section>
 

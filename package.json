@@ -6,16 +6,19 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "~1.17.1",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "ejs": "^2.5.6",
     "express": "~4.15.2",
+    "express-session": "^1.15.3",
     "jade": "~1.11.0",
+    "mariasql": "^0.2.6",
     "morgan": "~1.8.1",
     "openid": "^2.0.6",
     "serve-favicon": "~2.4.2",
-    "static-favicon": "^2.0.0-alpha",
-    "uniqid": "^4.1.1"
+    "static-favicon": "^2.0.0-alpha"
   }
 }

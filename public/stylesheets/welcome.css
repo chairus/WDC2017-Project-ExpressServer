@@ -35,16 +35,12 @@ div {
 	border: 2px solid black;
 	border-radius: 10px;
 	width: 550px;
-	height: 400px;
 	padding: 25px;
 	font-size: 17px;
 	font-weight: 600;
 	opacity: 0.85;
 }
 
-form{
-
-}
 label{
 	width: 100%;
 }
@@ -79,84 +75,22 @@ a:active{
 a:hover{
 	color;
 }
-body {
-	background-image: url("coffee2.jpeg");
-	background-position: center top;
-	background-repeat: no-repeat;
-	font-family: Lato;
-}
 
-img {
-
-}
-
-h1 {
-	font-size: 500%;
-	text-align: center;
-	font-family: "Exo", sans-serif;
-	color: dodgerblue;
-}
-
-p {
-	line-height: 1;
-}
-
-section {
-	text-align: center;
-}
-
-div {
-	line-height: 3;
-}
-
-.login {
-
+#warning-msg, #success-msg {
+	font-size: 17px;
+	width: 45%;
 	margin: auto;
-	background-color: white;
-	border: 2px solid black;
 	border-radius: 10px;
-	width: 550px;
-	height: 280px;
-	padding: 25px;
-	font-size: 17px;
-	font-weight: 600;
-	opacity: 0.85;
+	position: relative;
+	top: 30%;
+	line-height: 2.5;
+	margin-bottom: 1%;
 }
 
-form{
-
-}
-label{
-	width: 100%;
+#warning-msg {
+	background-color: rgb(241, 80, 58);
 }
 
-/* */
-input {
-	display: block;
-	text-align: left;
-	margin: auto;
-	width: 60%;
-	padding: 10px;
-	border: 2px solid grey;
-	border-radius: 5px;
-}
-. button{
-	padding: 5px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-}
-
-
-a:link{
-	color: grey;
-}
-a:visited{
-	color: grey;
-}
-a:active{
-	color;
-}
-a:hover{
-	color;
+#success-msg {
+	background-color: rgb(30, 235, 45);
 }

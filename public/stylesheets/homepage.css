@@ -196,7 +196,7 @@ ul {
     height: 150px;
     background-color: black;
     z-index: 5;
-    
+
 }
 */
 
@@ -207,7 +207,7 @@ ul {
     overflow-x: hidden;
     overflow-y: hidden;
     margin: 0px 10px;
-    background-color: LightGrey;    
+    background-color: LightGrey;
 }
 
 .journal-entry-date {
@@ -334,7 +334,7 @@ ul {
     margin-right: 20px;
     border: 0;
     box-sizing: border-box;
-    background: url(textarea_background.png)
+    background: url(../images/textarea_background.png)
 }
 
 #entry-title:focus, #entry-content:focus {
@@ -412,10 +412,24 @@ ul {
 }
 
 #btn-link, #btn-unlink {
-    position: relative; 
+    position: relative;
     text-transform: lowercase;
     font-size: 15px;
     font-family: "Raleway";
     float: right;
     line-height: 35px;
+}
+
+#user-profile {
+    background-color: dodgerblue;
+    font-size: 100px;
+    text-align: center;
+}
+
+#email-address {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    padding-bottom: 5px;
+    color: rgb(255, 255, 255);
 }

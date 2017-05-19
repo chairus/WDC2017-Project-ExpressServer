@@ -1,6 +1,6 @@
 <div id="journal-entries">
     <% journalEntries.forEach(function(journalEntry) { %>
-        <div class="journal-entry-wrapper" onclick="editEntry('<%= journalEntry._id %>')">
+        <div class="journal-entry-wrapper" onclick="editEntry('<%= journalEntry.id %>')">
             <p class="journal-entry-date"><%= journalEntry.timestamp %></p>
             <p class="journal-entry-title"><%= journalEntry.title %></p>
             <p class="journal-entry-content"><%= journalEntry.content %></p>

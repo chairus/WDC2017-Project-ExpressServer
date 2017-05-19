@@ -13,35 +13,42 @@
 
 	<section>
 	<h1>Memory Note</h1>
+	<% if (success && success.length > 0) { %>
+		<div id="success-msg" role="alert">
+			<%= success %>
+		</div>
+	<% } %>
+	<% if (warning && warning.length > 0) { %>
+		<div id="warning-msg" role="alert">
+			<%= warning %>
+		</div>
+	<% } %>
 
 	<div class="login">
 		<p>Welcome to MemoryNote!</p>
-		<label>If you already have a Google account:</label>
+		<!-- <label>If you already have a Google account:</label>
 			<br>
-		  <button id="btn-login" onclick="requestAccess();">Login</button>
+		  <button id="btn-login" onclick="requestAccess();">Login</button> -->
 
-
-<!--
-		<form action="/welcome.html" method="POST">
-
+		<form action="/users/login" method="POST">
 			<label for="femail" >Enter email address:</label>
-			<input type="email" id="femail" name="femail" placeholder="Enter email address" required>
+			<input type="email" id="femail" name="user[femail]" placeholder="Enter email address" required>
 			<label for="fpwd" >Enter password:</label>
-			<input type="password" id="fpwd" name="fpwd" placeholder="Enter password" required>
+			<input type="password" id="fpwd" name="user[fpwd]" placeholder="Enter password" required>
             <label>If you already have an account</label>
             <br>
             <button type="submit" id="btn-login">Login</button>
 		</form>
-	-->
+
 		<!--<button onclick="trySampleRequest();">Try sample request</button> -->
 		<p>or<p>
-		<p>If you don't have a Google account<p>
-		<button class="btn-create-account">Create a Google account</button>
+		<p>If you don't have an account<p>
+		<button class="btn-create-account">Create an account</button>
 	</div>
 	</section>
 
-<!--    <script src="jquery-3.2.0.js"></script>-->
-    <script type="text/javascript" src="welcome.js"></script>
+   <script src="/javascripts/lib/jquery-3.2.0.js"></script>
+    <script type="text/javascript" src="/javascripts/welcome.js"></script>
 <!--    <script type="text/javascript" src="homepage.js"></script>-->
 <!--    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>-->
 </body>

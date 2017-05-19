@@ -28,6 +28,37 @@ $(document).ready(function() {
     });
 });
 
+// function getCookie(cname) {
+//     var name = cname + "=";
+//     var decodedCookie = decodeURIComponent(document.cookie);
+//     var ca = decodedCookie.split(';');
+//     for(var i = 0; i <ca.length; i++) {
+//         var c = ca[i];
+//         while (c.charAt(0) == ' ') {
+//             c = c.substring(1);
+//         }
+//         if (c.indexOf(name) === 0) {
+//             return c.substring(name.length, c.length);
+//         }
+//     }
+//     return "";
+// }
+
+//Checking the user Login status to make sure
+//that the user has logged in before accessing the homepage
+// var currentloginStatus= getCookie("loginStatus");
+// function checkLogin(){
+//     if (currentloginStatus == "Invalid" || currentloginStatus === "") {
+//         alert(currentloginStatus);
+//         location.href = "/";
+//     }
+//     else {
+//
+//     }
+// }
+// checkLogin();
+
+
 var journalEntryTitle = null;
 var activeIdEntry = null;    // Contains the ID of the saved journal entry curently being viewed/edited
 var buttonDeleteEntry = document.querySelector(".btn-delete-entry");
@@ -56,8 +87,8 @@ var searchBar = document.getElementById("search-entry");
    =============================== */
 
 // Client ID and API key from the Developer Console
-//var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
-var CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
+var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
+//var CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
 // // Array of API discovery doc URLs for APIs used by the quickstart
  var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 //
@@ -226,7 +257,7 @@ buttonAddEntry.addEventListener("click", function() {
             buttonSaveEntry.removeEventListener("click", replaceEntry);
             buttonSaveEntry.addEventListener("click", postEntry);
         }
-    }
+    };
 
     xhr.open("GET", "/homepage.html/new&nolayout", true);
     xhr.send(null);
@@ -276,7 +307,7 @@ function removeEntry() {
             activeIdEntry = null;
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
-    }
+    };
 
     xhr.open("DELETE", "/homepage.html/" + activeIdEntry, true);
     xhr.send(null);
@@ -301,7 +332,7 @@ buttonSaveTag.addEventListener("click", function() {
         }
     }
 
-    if (tagTitle != "" && create) {
+    if (tagTitle !== "" && create) {
         createTag();
     }
 
@@ -331,7 +362,8 @@ buttonDeleteTag.addEventListener("click", function() {
 
 // Event handler for signing out
 buttonSignOut.addEventListener("click", function() {
-      document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000";
+    //   document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000";
+    location.replace('/users/signout');
 });
 
 
@@ -352,10 +384,9 @@ function createTag() {
 }
 
 function postEntry() {
-    var title = document.getElementById("entry-title").value;
-    var content = document.getElementById("entry-content").value;
-    var date = (new Date()).toDateString();
-    var params = "entryTitle=" + title + "&entryContent=" + content + "&entryDate=" + date;
+    var title = document.getElementById("entry-title").value.replace(/&/g, "and").replace(/\\/g, "\\\\");
+    var content = document.getElementById("entry-content").value.replace(/&/g, "and").replace(/\\/g, "\\\\");
+    var params = "entryTitle=" + title + "&entryContent=" + content;
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/homepage.html", true);
@@ -377,7 +408,7 @@ function postEntry() {
             changeToHomepage();
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
-    }
+    };
 
     xhr.send(params);
 }
@@ -401,19 +432,19 @@ function editEntry(id) {
 
             window.history.pushState('', 'edit/show page', '/homepage.html/' + id);
         }
-    }
+    };
 
     xhr.open("GET", "/homepage.html/" + id, true);
 
     setTimeout(function() {
         xhr.send(null);
-    }, 400);
+    }, 100);
 }
 
 
 function replaceEntry() {
-    var title = document.getElementById("entry-title").value;
-    var content = document.getElementById("entry-content").value;
+    var title = document.getElementById("entry-title").value.replace(/&/g, "and").replace(/\\/g, "\\\\");
+    var content = document.getElementById("entry-content").value.replace(/&/g, "and").replace(/\\/g, "\\\\");
     var params = "entryTitle=" + title + "&entryContent=" + content;
 
     var xhr = new XMLHttpRequest();
@@ -438,7 +469,7 @@ function replaceEntry() {
             activeIdEntry = null;   // No saved entry being viewed/modified
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
-    }
+    };
 
     xhr.send(params);
 }
@@ -447,7 +478,7 @@ function replaceEntry() {
 buttonSettings.addEventListener("click",function(){
     document.getElementById("settPopup").classList.toggle("show");
     document.getElementById("settModal").style.display = "block";
-})
+});
 
 //Event handler for "Apply" button
 buttonApply.addEventListener("click",function(){
@@ -456,8 +487,8 @@ buttonApply.addEventListener("click",function(){
     if(usr == "Red")
     {
       document.getElementById("indexbody").style.backgroundColor = "Crimson";
-      document.getElementById("calendar-header").style.backgroundColor = "darkred"
-      document.getElementById("journal-entries-header").style.backgroundColor = "darkred"
+      document.getElementById("calendar-header").style.backgroundColor = "darkred";
+      document.getElementById("journal-entries-header").style.backgroundColor = "darkred";
       document.getElementById("tag-header").style.backgroundColor = "darkred";
       document.getElementById("edit-entry-header").style.backgroundColor = "darkred";
       document.getElementById("settPopup").style.backgroundColor = "darkred";
@@ -466,8 +497,8 @@ buttonApply.addEventListener("click",function(){
     else if(usr == "Blue")
     {
       document.getElementById("indexbody").style.backgroundColor = "dodgerblue";
-      document.getElementById("calendar-header").style.backgroundColor = "darkblue"
-      document.getElementById("journal-entries-header").style.backgroundColor = "darkblue"
+      document.getElementById("calendar-header").style.backgroundColor = "darkblue";
+      document.getElementById("journal-entries-header").style.backgroundColor = "darkblue";
       document.getElementById("tag-header").style.backgroundColor = "darkblue";
       document.getElementById("edit-entry-header").style.backgroundColor = "darkblue";
       document.getElementById("settPopup").style.backgroundColor = "darkblue";
@@ -476,13 +507,13 @@ buttonApply.addEventListener("click",function(){
 document.getElementById("settModal").style.display = "none";
 document.getElementById("settPopup").classList.toggle("show");
 
-})
+});
 
 //Event handler for "Cancel" button
 buttonCancel.addEventListener("click",function(){
   	document.getElementById("settPopup").classList.toggle("show");
   	document.getElementById("settModal").style.display = "none";
-})
+});
 
 //Checking LoginStatus
 function getCookie(cname) {
@@ -494,7 +525,7 @@ for(var i = 0; i <ca.length; i++) {
     while (c.charAt(0) == ' ') {
         c = c.substring(1);
     }
-    if (c.indexOf(name) == 0) {
+    if (c.indexOf(name) === 0) {
         return c.substring(name.length, c.length);
     }
 }
@@ -503,12 +534,11 @@ return "";
 
 // Event handler for search bar
 searchBar.addEventListener("change", function() {
-	var searchTerm = "searchTerm=" + searchBar.value.toLowerCase();
+	var searchTerm = "searchTerm=" + searchBar.value.replace(/ /g, "%");
 
 	// Send XMLHttpRequest
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "/homepage.html/search", true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.open("GET", '/homepage.html/search?' + searchTerm, true);
 	xhr.onreadystatechange = function() {
     	if (xhr.readyState == 4 && xhr.status == 200) {
         	var div = document.createElement('DIV');
@@ -522,5 +552,5 @@ searchBar.addEventListener("change", function() {
     	}
 	}
 
-	xhr.send(searchTerm);
-})
+	xhr.send(null);
+});
