@@ -3,8 +3,7 @@ var Client = require('mariasql');
 var mariadb = new Client({
     host: 'localhost',
     user: 'cyrus06',
-    password: 'Tqbfjotld-06',
-    db: 'wdc_web_app'
+    password: 'Tqbfjotld-06'
 });
 
 // CREATE DATABASE FOR THE WEB APP
