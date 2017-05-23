@@ -23,7 +23,7 @@ router.get("/", function(req, res) {
 
 // SEARCH - Search journal entries of a user using a search term
 router.get("/homepage.html/search", checkIsLoggedIn ,function(req, res) {
-    var username = req.session.user.femail;
+    var username = req.session.user.username;
     // Replace all percent('%') characters to space(' ')
     var searchTerm = req.query.searchTerm.replace(/%/g, ' ');
 
@@ -44,7 +44,7 @@ router.get("/homepage.html/search", checkIsLoggedIn ,function(req, res) {
 });
 
 router.get("/homepage.html", checkIsLoggedIn, function(req, res) {
-    var username = req.session.user.femail;
+    var username = req.session.user.username;
     // Retrieve journal entries of the logged in user
     mariadb.query(`SELECT journal_entries.id, title, content, DATE_FORMAT(timestamp, "%b %d %Y at %h:%i %p") AS timestamp FROM journal_entries JOIN users ON journal_entries.user_id=users.id WHERE username="${username}" ORDER BY timestamp DESC`, function(err, journalEntries) {
         if (err) {
@@ -76,11 +76,11 @@ router.post("/homepage.html", checkIsLoggedIn, function(req, res) {
     // Extract values from the sent form
     var title = req.body.entryTitle.replace(/"/g, "'");
     var content = req.body.entryContent.replace(/"/g, "'");
-    var username = req.session.user.femail;
+    var username = req.session.user.username;
 
     if (title !== '' || content !== '') {
         // Store the new journal entry into the DB
-        mariadb.query(`INSERT INTO journal_entries(title, content, timestamp, user_id) VALUES("${title}", "${content}", NOW(), ${req.session.user.id})`, function(err, result) {
+        mariadb.query(`INSERT INTO journal_entries(title, content, timestamp, user_id) VALUES("${title}", "${content}", NOW(), "${req.session.user.id}")`, function(err, result) {
             if (err) {
                 throw err;
             }
@@ -113,7 +113,7 @@ router.get("/homepage.html/:id", checkIsLoggedIn, function(req, res) {
 
 // UPDATE - Display the journal entry with modified content
 router.put("/homepage.html/:id", function(req, res) {
-    var username = req.session.user.femail;
+    var username = req.session.user.username;
     var title = req.body.entryTitle.replace(/"/g, "'");
     var content = req.body.entryContent.replace(/"/g, "'");
     var id = req.params.id;
@@ -130,7 +130,7 @@ router.put("/homepage.html/:id", function(req, res) {
 // DELETE - Remove an entry from the journal entries
 router.delete("/homepage.html/:id", function(req, res) {
     var id = req.params.id;
-    var username = req.session.user.femail;
+    var username = req.session.user.username;
 
     mariadb.query(`DELETE FROM journal_entries WHERE id="${id}"`, function(err, result) {
         if (err) {

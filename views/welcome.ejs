@@ -3,6 +3,8 @@
 
 <head>
 	<meta charset="utf-8"/>
+	<!-- <meta name="google-signin-client_id" content="309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com"> -->
+	<meta name="google-signin-client_id" content="214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com">
 	<title>Welcome to Memory Note!</title>
 	<link rel="stylesheet" type="text/css" href="welcome.css">
 	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
@@ -39,18 +41,19 @@
             <br>
             <button type="submit" id="btn-login">Login</button>
 		</form>
-
-		<!--<button onclick="trySampleRequest();">Try sample request</button> -->
+		<p>or<p>
+		<div class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true" data-align="center" align="center" data-theme="dark"></div>
 		<p>or<p>
 		<p>If you don't have an account<p>
 		<button class="btn-create-account">Create an account</button>
 	</div>
 	</section>
 
-   <script src="/javascripts/lib/jquery-3.2.0.js"></script>
+   	<script src="/javascripts/lib/jquery-3.2.0.js"></script>
     <script type="text/javascript" src="/javascripts/welcome.js"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
 <!--    <script type="text/javascript" src="homepage.js"></script>-->
-<!--    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>-->
+   <!-- <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script> -->
 </body>
 
 </html>

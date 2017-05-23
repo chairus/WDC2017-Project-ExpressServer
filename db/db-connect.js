@@ -23,7 +23,7 @@ mariadb.query('CREATE DATABASE IF NOT EXISTS wdc_web_app', function(err, newDB) 
         *   username: VARCHAR
         *   password: VARCHAR
         */
-        mariadb.query('CREATE TABLE IF NOT EXISTS users(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, username VARCHAR(100), password VARCHAR(255))', function(err, users) {
+        mariadb.query('CREATE TABLE IF NOT EXISTS users(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, username VARCHAR(100) UNIQUE, password VARCHAR(255) NOT NULL, googleID VARCHAR(255) DEFAULT NULL)', function(err, users) {
             if (err) {
                 throw err;
             }
@@ -35,7 +35,7 @@ mariadb.query('CREATE DATABASE IF NOT EXISTS wdc_web_app', function(err, newDB) 
             *   timestamp: DATETIME
             *   user_id: INT REFEERENCES users(id)
             */
-            mariadb.query('CREATE TABLE IF NOT EXISTS journal_entries(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, title TINYTEXT, content TEXT, timestamp DATETIME, user_id INT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id))', function(err, journal_entries) {
+            mariadb.query('CREATE TABLE IF NOT EXISTS journal_entries(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, title TINYTEXT, content TEXT, timestamp DATETIME, user_id INT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE)', function(err, journal_entries) {
                 if (err) {
                     throw err;
                 }

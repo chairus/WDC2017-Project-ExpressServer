@@ -1,25 +1,30 @@
 var express = require('express');
+var GoogleAuth = require('google-auth-library');
 var router = express.Router();
 var mariadb = require('../db/db-connect');
 const bcrypt = require('bcryptjs');
+// const CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
+const CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
 
 // Middleware function for any type of HTTP request to the /users/login path.
 // This function will be executed everytime there is a HTTP request to the /user/login path.
+// This function checks the users credentials
 router.use('/login', function(req, res, next) {
     var email = req.body.user.femail;
     var pass = req.body.user.fpwd;
 
     // Check user credentials
-    mariadb.query(`SELECT id, password FROM users WHERE username="${email}"`, function(err, user) {
+    mariadb.query(`SELECT id, username, password FROM users WHERE username="${email}"`, function(err, foundUser) {
         if (err) {
             throw err;
         }
 
-        if (user.length > 0) {
-            return bcrypt.compare(pass, user[0].password, function(err, result) {
+        if (foundUser.length > 0) {
+            return bcrypt.compare(pass, foundUser[0].password, function(err, result) {
                 if (result) {
-                    req.body.user.id = user[0].id;
-                    req.session.user = req.body.user;
+                    delete foundUser[0].password;
+                    req.session.user = foundUser[0];
+                    // console.log(req.session.user);
                     return next();
                 }
                 req.flash('warning', 'Wrong password');
@@ -28,6 +33,55 @@ router.use('/login', function(req, res, next) {
         }
         req.flash('warning', 'User not found');
         res.redirect('/');
+    });
+});
+
+// Middleware function to verify googleID
+router.use('/verify_token', function(req, res, next) {
+    var auth = new GoogleAuth();
+    var client = new auth.OAuth2(CLIENT_ID, '', '');
+    var token = req.body.idtoken;
+
+    client.verifyIdToken(token, CLIENT_ID, function(e, login) {
+        var payload = login.getPayload();
+        var userid = payload.sub;
+        var email = payload.email;
+
+        // Check if the user has already signed up
+        mariadb.query(`SELECT id, username, googleID FROM users WHERE username="${email}"`, function(err, user) {
+            if (err) {
+                throw err;
+            }
+
+            // User already exist in the database(i.e. user has already signed up) check credentials
+            if (user.length > 0) {
+                bcrypt.compare(userid, user[0].googleID, function(err, result) {
+                    if (result) {
+                        delete user[0].googleID;
+                        req.session.user = user[0];
+                        return next();
+                    }
+                    res.send('Invalid googleID');
+                });
+            } else {
+                // Add user into the database
+                bcrypt.genSalt(10, function(err, salt) {
+                    bcrypt.hash(userid, salt, function(err, hash) {
+                        mariadb.query(`INSERT INTO users(username, password, googleID) VALUES ("${email}", "google-sign-in", "${hash}")`, function(err, result) {
+                            if (err) {
+                                throw err;
+                            }
+
+                            req.session.user = {
+                                id: result.info.insertId,
+                                username: email
+                            };
+                            return next();
+                        });
+                    });
+                });
+            }
+        });
     });
 });
 
@@ -69,6 +123,11 @@ router.post('/signup', function(req, res) {
 // LOGIN
 router.post('/login', function(req, res) {
     res.redirect('/homepage.html');
+});
+
+// GOOGLE SIGN IN
+router.post('/verify_token', function(req,res) {
+    res.status(200).send();
 });
 
 // SIGNOUT

@@ -28,36 +28,6 @@ $(document).ready(function() {
     });
 });
 
-// function getCookie(cname) {
-//     var name = cname + "=";
-//     var decodedCookie = decodeURIComponent(document.cookie);
-//     var ca = decodedCookie.split(';');
-//     for(var i = 0; i <ca.length; i++) {
-//         var c = ca[i];
-//         while (c.charAt(0) == ' ') {
-//             c = c.substring(1);
-//         }
-//         if (c.indexOf(name) === 0) {
-//             return c.substring(name.length, c.length);
-//         }
-//     }
-//     return "";
-// }
-
-//Checking the user Login status to make sure
-//that the user has logged in before accessing the homepage
-// var currentloginStatus= getCookie("loginStatus");
-// function checkLogin(){
-//     if (currentloginStatus == "Invalid" || currentloginStatus === "") {
-//         alert(currentloginStatus);
-//         location.href = "/";
-//     }
-//     else {
-//
-//     }
-// }
-// checkLogin();
-
 
 var journalEntryTitle = null;
 var activeIdEntry = null;    // Contains the ID of the saved journal entry curently being viewed/edited
@@ -80,8 +50,6 @@ var events = [];    // An object with an array property that holds the events in
 var searchBar = document.getElementById("search-entry");
 
 
-
-
 /* ===============================
     Google Calendar API functions
    =============================== */
@@ -89,16 +57,16 @@ var searchBar = document.getElementById("search-entry");
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
 //var CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
-// // Array of API discovery doc URLs for APIs used by the quickstart
- var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-//
-// // Authorization scopes required by the API; multiple scopes can be
-// // included, separated by spaces.
+// Array of API discovery doc URLs for APIs used by the quickstart
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
  var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-//
-// var authorizeButton = buttonLink;
-// var signoutButton = buttonSignOut;
-//
+
+var authorizeButton = buttonLink;
+var signoutButton = buttonSignOut;
+
 // /**
 // *  On load, called to load the "auth2" library and API client library.
 // */
@@ -118,44 +86,44 @@ var CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleuserco
      }).then(function () {
        listUpcomingEvents();
        // Listen for sign-in state changes.
-       //gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+       gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
        // Handle the initial sign-in state.
-      //  updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-       //authorizeButton.onclick = handleAuthClick;
-       //signoutButton.onclick = handleSignoutClick;
+       updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+       authorizeButton.onclick = handleAuthClick;
+       signoutButton.onclick = handleSignoutClick;
      });
  }
 
-// /**
-// *  Called when the signed in status changes, to update the UI
-// *  appropriately. After a sign-in, the API is called.
-// */
-// function updateSigninStatus(isSignedIn) {
-//     if (isSignedIn) {
-//         authorizeButton.disabled = true;
-//         authorizeButton.innerHTML = "linked";
-//         listUpcomingEvents();
-//     } else {
-//         authorizeButton.disabled = false;
-//         authorizeButton.innerHTML = "link";
-//     }
-// }
-//
-// /**
-// *  Sign in the user upon button click.
-// */
-// function handleAuthClick(event) {
-//     gapi.auth2.getAuthInstance().signIn();
-// }
-//
-// /**
-// *  Sign out the user upon button click.
-// */
-// function handleSignoutClick(event) {
-//     gapi.auth2.getAuthInstance().signOut();
-// }
-//
+/**
+*  Called when the signed in status changes, to update the UI
+*  appropriately. After a sign-in, the API is called.
+*/
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+        authorizeButton.disabled = true;
+        authorizeButton.innerHTML = "linked";
+        listUpcomingEvents();
+    } else {
+        authorizeButton.disabled = false;
+        authorizeButton.innerHTML = "link";
+    }
+}
+
+/**
+*  Sign in the user upon button click.
+*/
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+*  Sign out the user upon button click.
+*/
+function handleSignoutClick(event) {
+    gapi.auth2.getAuthInstance().signOut();
+}
+
 // /**
 // <<<<<<< HEAD
 // * Send request to Google servers to fetch events from Google calendar
