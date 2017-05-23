@@ -1,6 +1,7 @@
 $(document).ready(function() {
     // page is now ready, initialize the calendar...
     $('#calendar').fullCalendar({
+        height: 460,
         eventMouseover: function(calEvent, jsEvent) {
             var tooltip = "<span class=\"tooltipevent\" style=\"width:300px;height:auto;background:black;color:white;position:absolute;z-index:5;border-radius:6px;padding:5px;text-align:center\">" + calEvent.title + " on " + calEvent.start._d.toDateString() + " from " + $.fullCalendar.formatDate(calEvent.start, "h:mmt") + " to " + $.fullCalendar.formatDate(calEvent.end, "h:mmt") + " @ " + calEvent.location + "</span>";
 
@@ -24,7 +25,7 @@ $(document).ready(function() {
             journalEntryTitle = event.title;
         },
 
-        eventLimit: 2
+        eventLimit: 1
     });
 });
 
@@ -460,7 +461,7 @@ buttonApply.addEventListener("click",function(){
       document.getElementById("tag-header").style.backgroundColor = "darkred";
       document.getElementById("edit-entry-header").style.backgroundColor = "darkred";
       document.getElementById("settPopup").style.backgroundColor = "darkred";
-
+      document.getElementById("user-profile").style.backgroundColor = "Crimson";
     }
     else if(usr == "Blue")
     {
@@ -470,6 +471,7 @@ buttonApply.addEventListener("click",function(){
       document.getElementById("tag-header").style.backgroundColor = "darkblue";
       document.getElementById("edit-entry-header").style.backgroundColor = "darkblue";
       document.getElementById("settPopup").style.backgroundColor = "darkblue";
+      document.getElementById("user-profile").style.backgroundColor = "dodgerblue";
     }
 
 document.getElementById("settModal").style.display = "none";

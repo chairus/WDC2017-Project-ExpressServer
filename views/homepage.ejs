@@ -15,11 +15,11 @@
     <div id="web-app-title">Memory Note</div>
     <div id="wrapper">
         <div id="left-panel">
-            <div id="user-profile"><i class="ion-android-contact"></i>
+            <!-- <div id="user-profile"><i class="ion-android-contact"></i>
                 <p id="email-address">
                     <%= user %>
                 </p>
-            </div>
+            </div> -->
             <div id="calendar-header"><i class="ion-calendar"></i>Calendar</div>
             <div id="calendar"></div>
             <div id="tag-header">
@@ -47,16 +47,19 @@
     </div>
     <input type="search" name="search" id="search-entry" placeholder="Search">
     <button class="btn-add-entry"><i class="ion-plus-round"></i>Add entry</button>
-
     <div class="save-and-del-btn">
         <button class="btn-save-entry" title="Save entry"><i class="ion-checkmark-round"></i>Save</button>
         <button class="btn-delete-entry" title="Delete entry"><i class="ion-trash-b"></i>Delete</button>
     </div>
 
-    <div style="position:absolute; right:0px; bottom:5px;">
+    <div class="footer">
         <button class="btn-sign-out"><i class="ion-power"></i>Sign out</button>
         <button class="btn-settings"><i class="ion-settings"></i>Settings</button>
+        <div id="user-profile"><i class="ion-android-contact"></i>
+                <%= user %>
+        </div>
     </div>
+
 
     <!-- Disable background -->
     <div class="modal" id="settModal"></div>
