@@ -46,7 +46,7 @@ router.get("/homepage.html/search", checkIsLoggedIn ,function(req, res) {
 router.get("/homepage.html", checkIsLoggedIn, function(req, res) {
     var username = req.session.user.username;
     // Retrieve journal entries of the logged in user
-    mariadb.query(`SELECT journal_entries.id, title, content, DATE_FORMAT(timestamp, "%b %d %Y at %l:%i %p") AS timestamp FROM journal_entries JOIN users ON journal_entries.user_id=users.id WHERE username="${username}" ORDER BY timestamp DESC`, function(err, journalEntries) {
+    mariadb.query(`SELECT journal_entries.id, title, content, DATE_FORMAT(timestamp, "%b %d %Y at %l:%i %p") AS timestamp FROM journal_entries JOIN users ON journal_entries.user_id=users.id WHERE username="${username}" ORDER BY journal_entries.timestamp DESC`, function(err, journalEntries) {
         if (err) {
             throw err;
         }
@@ -141,7 +141,7 @@ router.delete("/homepage.html/:id", function(req, res) {
 });
 
 function retrieveJournalEntries(username, res) {
-    mariadb.query(`SELECT journal_entries.id, title, content, DATE_FORMAT(timestamp, "%b %d %Y at %l:%i %p") AS timestamp FROM journal_entries JOIN users ON journal_entries.user_id=users.id WHERE username="${username}" ORDER BY timestamp DESC`, function(err, journalEntries) {
+    mariadb.query(`SELECT journal_entries.id, title, content, DATE_FORMAT(timestamp, "%b %d %Y at %l:%i %p") AS timestamp FROM journal_entries JOIN users ON journal_entries.user_id=users.id WHERE username="${username}" ORDER BY journal_entries.timestamp DESC`, function(err, journalEntries) {
         if (err) {
             throw err;
         }

@@ -24,7 +24,6 @@ router.use('/login', function(req, res, next) {
                 if (result) {
                     delete foundUser[0].password;
                     req.session.user = foundUser[0];
-                    // console.log(req.session.user);
                     return next();
                 }
                 req.flash('warning', 'Wrong password');
@@ -53,7 +52,7 @@ router.use('/verify_token', function(req, res, next) {
                 throw err;
             }
 
-            // User already exist in the database(i.e. user has already signed up) check credentials
+            // User already exist in the database(i.e. user has already signed up)
             if (user.length > 0) {
                 bcrypt.compare(userid, user[0].googleID, function(err, result) {
                     if (result) {
