@@ -126,13 +126,10 @@ function handleSignoutClick(event) {
 }
 
 // /**
-// <<<<<<< HEAD
 // * Send request to Google servers to fetch events from Google calendar
 // =======
 // * Print the summary and start datetime/date of the next ten events in
-// * the authorized user's calendar. If no events are found an
-// * appropriate message is printed.
-// >>>>>>> b7ac840be7e6c61a361c5309ea501a2d580141e8
+// * the authorized user's calendar.
 // */
 function listUpcomingEvents() {
     gapi.client.calendar.events.list({
@@ -146,10 +143,8 @@ function listUpcomingEvents() {
         addEventToCalendar(response);
     });
 }
-//
-//
-/* Retrieve events from Google Calendar and display it on the calendar. */
 
+/* Retrieve events from Google Calendar and display it on the calendar. */
 function addEventToCalendar(response) {
     var eventsGC = response.result.items;
     var when;
