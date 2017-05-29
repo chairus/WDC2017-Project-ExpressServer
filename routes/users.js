@@ -3,7 +3,6 @@ var GoogleAuth = require('google-auth-library');
 var router = express.Router();
 var mariadb = require('../db/db-connect');
 const bcrypt = require('bcryptjs');
-// const CLIENT_ID = '309978492743-ereano57g6etdgrk4ebno3tge401fjt1.apps.googleusercontent.com';
 const CLIENT_ID = '214746217802-jg3f9mu6oflodrvhott42cjj7ij6palc.apps.googleusercontent.com';
 
 // Middleware function for any type of HTTP request to the /users/login path.

@@ -68,17 +68,17 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 var authorizeButton = buttonLink;
 var signoutButton = buttonSignOut;
 
-// /**
-// *  On load, called to load the "auth2" library and API client library.
-// */
+/**
+*  On load, called to load the "auth2" library and API client library.
+*/
  function handleClientLoad() {
      gapi.load('client:auth2', initClient);
  }
-//
-// /**
-// *  Initializes the API client library and sets up sign-in state
-// *  listeners.
-// */
+
+/**
+*  Initializes the API client library and sets up sign-in state
+*  listeners.
+*/
  function initClient() {
      gapi.client.init({
        discoveryDocs: DISCOVERY_DOCS,
@@ -125,12 +125,9 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
 }
 
-// /**
-// * Send request to Google servers to fetch events from Google calendar
-// =======
-// * Print the summary and start datetime/date of the next ten events in
-// * the authorized user's calendar.
-// */
+/**
+ ** Send request to Google servers to fetch events from Google calendar
+ **/
 function listUpcomingEvents() {
     gapi.client.calendar.events.list({
       'calendarId': 'primary',
@@ -144,7 +141,9 @@ function listUpcomingEvents() {
     });
 }
 
-/* Retrieve events from Google Calendar and display it on the calendar. */
+/**
+ ** Retrieve events from Google Calendar and display it on the calendar.
+ **/
 function addEventToCalendar(response) {
     var eventsGC = response.result.items;
     var when;
@@ -166,9 +165,7 @@ function addEventToCalendar(response) {
 
     $("#calendar").fullCalendar("addEventSource", events);  // Display Google Calendar events on the calendar
 }
-//
-//
-// /* ======================================================================= */
+/* ======================================================================= */
 
 
 function changeToHomepage() {
@@ -258,16 +255,7 @@ function removeEntry() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var div = document.createElement('DIV');
-            div.setAttribute("class", "journal-entry-container");
-            div.innerHTML = xhr.response;
-
-            var editEntryNode = document.querySelector(".entry-container");
-            var rightPanelNode = document.getElementById("right-panel");
-            rightPanelNode.removeChild(editEntryNode);
-            rightPanelNode.appendChild(div);
-
-            changeToHomepage();
+            showJournalEntries(xhr);
             activeIdEntry = null;
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
@@ -326,6 +314,7 @@ buttonDeleteTag.addEventListener("click", function() {
 
 // Event handler for signing out
 buttonSignOut.addEventListener("click", function() {
+    // If you want the user to sign out from his/her Google account use the first line of code else the second
     //   document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000";
     location.replace('/users/signout');
 });
@@ -360,16 +349,7 @@ function postEntry() {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var div = document.createElement('DIV');
-            div.setAttribute("class", "journal-entry-container");
-            div.innerHTML = xhr.response;
-
-            var editEntryNode = document.querySelector(".entry-container");
-            var rightPanelNode = document.getElementById("right-panel");
-            rightPanelNode.removeChild(editEntryNode);
-            rightPanelNode.appendChild(div);
-
-            changeToHomepage();
+            showJournalEntries(xhr);
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
     };
@@ -420,16 +400,7 @@ function replaceEntry() {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var div = document.createElement('DIV');
-            div.setAttribute("class", "journal-entry-container");
-            div.innerHTML = xhr.response;
-
-            var editEntryNode = document.querySelector(".entry-container");
-            var rightPanelNode = document.getElementById("right-panel");
-            rightPanelNode.removeChild(editEntryNode);
-            rightPanelNode.appendChild(div);
-
-            changeToHomepage();
+            showJournalEntries(xhr);
             activeIdEntry = null;   // No saved entry being viewed/modified
             window.history.pushState('', 'homepage url', '/homepage.html');
         }
@@ -450,23 +421,11 @@ buttonApply.addEventListener("click",function(){
     var usr = a.options[a.selectedIndex].value;
     if(usr == "Red")
     {
-      document.getElementById("indexbody").style.backgroundColor = "Crimson";
-      document.getElementById("calendar-header").style.backgroundColor = "darkred";
-      document.getElementById("journal-entries-header").style.backgroundColor = "darkred";
-      document.getElementById("tag-header").style.backgroundColor = "darkred";
-      document.getElementById("edit-entry-header").style.backgroundColor = "darkred";
-      document.getElementById("settPopup").style.backgroundColor = "darkred";
-      document.getElementById("user-profile").style.backgroundColor = "Crimson";
+        changeColor("crimson", "darkred");
     }
     else if(usr == "Blue")
     {
-      document.getElementById("indexbody").style.backgroundColor = "dodgerblue";
-      document.getElementById("calendar-header").style.backgroundColor = "darkblue";
-      document.getElementById("journal-entries-header").style.backgroundColor = "darkblue";
-      document.getElementById("tag-header").style.backgroundColor = "darkblue";
-      document.getElementById("edit-entry-header").style.backgroundColor = "darkblue";
-      document.getElementById("settPopup").style.backgroundColor = "darkblue";
-      document.getElementById("user-profile").style.backgroundColor = "dodgerblue";
+        changeColor("dodgerblue", "darkblue");
     }
 
 document.getElementById("settModal").style.display = "none";
@@ -480,26 +439,9 @@ buttonCancel.addEventListener("click",function(){
   	document.getElementById("settModal").style.display = "none";
 });
 
-//Checking LoginStatus
-function getCookie(cname) {
-var name = cname + "=";
-var decodedCookie = decodeURIComponent(document.cookie);
-var ca = decodedCookie.split(';');
-for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-    }
-}
-return "";
-}
-
 // Event handler for search bar
 searchBar.addEventListener("change", function() {
-	var searchTerm = "searchTerm=" + searchBar.value.replace(/ /g, "%");
+	var searchTerm = "searchTerm=" + searchBar.value.replace(/\s/g, "%");
 
 	// Send XMLHttpRequest
 	var xhr = new XMLHttpRequest();
@@ -519,3 +461,26 @@ searchBar.addEventListener("change", function() {
 
 	xhr.send(null);
 });
+
+function showJournalEntries(xhr) {
+    var div = document.createElement('DIV');
+    div.setAttribute("class", "journal-entry-container");
+    div.innerHTML = xhr.response;
+
+    var editEntryNode = document.querySelector(".entry-container");
+    var rightPanelNode = document.getElementById("right-panel");
+    rightPanelNode.removeChild(editEntryNode);
+    rightPanelNode.appendChild(div);
+
+    changeToHomepage();
+}
+
+function changeColor(color1, color2) {
+    document.getElementById("indexbody").style.backgroundColor = color1;
+    document.getElementById("calendar-header").style.backgroundColor = color2;
+    document.getElementById("journal-entries-header").style.backgroundColor = color2;
+    document.getElementById("tag-header").style.backgroundColor = color2;
+    document.getElementById("edit-entry-header").style.backgroundColor = color2;
+    document.getElementById("settPopup").style.backgroundColor = color2;
+    document.getElementById("user-profile").style.backgroundColor = color1;
+}
