@@ -223,7 +223,7 @@ buttonAddEntry.addEventListener("click", function() {
     xhr.open("GET", "/homepage.html/new&nolayout", true);
     xhr.send(null);
 
-    window.history.pushState('', 'new entry form', '/homepage.html/new');
+    window.history.replaceState('', 'new entry form', '/homepage.html/new');
 });
 
 // Event handler for "Delete entry" button
@@ -257,7 +257,7 @@ function removeEntry() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             showJournalEntries(xhr);
             activeIdEntry = null;
-            window.history.pushState('', 'homepage url', '/homepage.html');
+            window.history.replaceState('', 'homepage url', '/homepage.html');
         }
     };
 
@@ -350,7 +350,7 @@ function postEntry() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             showJournalEntries(xhr);
-            window.history.pushState('', 'homepage url', '/homepage.html');
+            window.history.replaceState('', 'homepage url', '/homepage.html');
         }
     };
 
@@ -402,7 +402,7 @@ function replaceEntry() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             showJournalEntries(xhr);
             activeIdEntry = null;   // No saved entry being viewed/modified
-            window.history.pushState('', 'homepage url', '/homepage.html');
+            window.history.replaceState('', 'homepage url', '/homepage.html');
         }
     };
 
